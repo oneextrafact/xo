@@ -435,10 +435,11 @@ func (tl TypeLoader) LoadProcParams(args *ArgType, procTpl *Proc) error {
 	}
 
 	// process params
-	for i, p := range paramList {
-		// TODO: some databases support named parameters in procs (MySQL)
+	for _, p := range paramList {
+		// DJG: support named parameters
 		paramTpl := &Field{
-			Name: fmt.Sprintf("v%d", i),
+			Name: snaker.ForceLowerCamelIdentifier(p.ParamName[2:]),
+			Type: p.ParamType,
 		}
 
 		// TODO: fix this so that nullable types can be used as parameters
