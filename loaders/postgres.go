@@ -101,10 +101,10 @@ func PgParseType(args *internal.ArgType, dt string, nullable bool) (int, string,
 		}
 	case "integer":
 		nilVal = "0"
-		typ = args.Int32Type
+		typ = "int64"
 		if nullable {
-			nilVal = "sql.NullInt64{}"
-			typ = "sql.NullInt64"
+			nilVal = "nil"
+			typ = "*int64"
 		}
 	case "bigint":
 		nilVal = "0"

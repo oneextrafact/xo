@@ -685,14 +685,14 @@ type bintree struct {
 }
 
 var _bintree = &bintree{Func: nil, Children: map[string]*bintree{
-	"postgres.enum.go.tpl":       {Func: bindataPostgresenumgotpl, Children: map[string]*bintree{}},
-	"postgres.foreignkey.go.tpl": {Func: bindataPostgresforeignkeygotpl, Children: map[string]*bintree{}},
-	"postgres.index.go.tpl":      {Func: bindataPostgresindexgotpl, Children: map[string]*bintree{}},
-	"postgres.proc.go.tpl":       {Func: bindataPostgresprocgotpl, Children: map[string]*bintree{}},
-	"postgres.query.go.tpl":      {Func: bindataPostgresquerygotpl, Children: map[string]*bintree{}},
-	"postgres.querytype.go.tpl":  {Func: bindataPostgresquerytypegotpl, Children: map[string]*bintree{}},
-	"postgres.tuple.go.tpl":      {Func: bindataPostgrestuplegotpl, Children: map[string]*bintree{}},
-	"postgres.type.go.tpl":       {Func: bindataPostgrestypegotpl, Children: map[string]*bintree{}},
+	// "postgres.enum.go.tpl":       {Func: bindataPostgresenumgotpl, Children: map[string]*bintree{}},
+	// "postgres.foreignkey.go.tpl": {Func: bindataPostgresforeignkeygotpl, Children: map[string]*bintree{}},
+	// "postgres.index.go.tpl":      {Func: bindataPostgresindexgotpl, Children: map[string]*bintree{}},
+	// "postgres.proc.go.tpl":       {Func: bindataPostgresprocgotpl, Children: map[string]*bintree{}},
+	// "postgres.query.go.tpl":      {Func: bindataPostgresquerygotpl, Children: map[string]*bintree{}},
+	// "postgres.querytype.go.tpl":  {Func: bindataPostgresquerytypegotpl, Children: map[string]*bintree{}},
+	// "postgres.tuple.go.tpl":      {Func: bindataPostgrestuplegotpl, Children: map[string]*bintree{}},
+	// "postgres.type.go.tpl":       {Func: bindataPostgrestypegotpl, Children: map[string]*bintree{}},
 	// "xo_db.go.tpl":               {Func: bindataXodbgotpl, Children: map[string]*bintree{}},
 	// "xo_package.go.tpl":          {Func: bindataXopackagegotpl, Children: map[string]*bintree{}},
 }}
@@ -711,10 +711,12 @@ func RestoreAsset(dir, name string) error {
 	if err != nil {
 		return err
 	}
+
 	err = ioutil.WriteFile(_filePath(dir, name), data, info.Mode())
 	if err != nil {
 		return err
 	}
+
 	return os.Chtimes(_filePath(dir, name), info.ModTime(), info.ModTime())
 }
 

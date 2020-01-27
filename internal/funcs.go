@@ -41,6 +41,9 @@ func (a *ArgType) NewTemplateFuncs() template.FuncMap {
 			jsonFriendly = string(unicode.ToLower(r)) + jsonFriendly[n:]
 			return jsonFriendly
 		},
+		"goFuncName": func(fnName string) string {
+			return strings.TrimPrefix(fnName, "Fn")
+		},
 	}
 }
 
