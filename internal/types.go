@@ -14,6 +14,7 @@ const (
 	IndexTemplate
 	QueryTypeTemplate
 	QueryTemplate
+	TupleTemplate
 
 	// always last
 	XOTemplate
@@ -39,6 +40,8 @@ func (tt TemplateType) String() string {
 		s = "querytype"
 	case QueryTemplate:
 		s = "query"
+	case TupleTemplate:
+		s = "tuple"
 	default:
 		panic("unknown TemplateType")
 	}
@@ -109,12 +112,19 @@ type Proc struct {
 
 // Field contains field information.
 type Field struct {
-	Name    string
-	Type    string
-	NilType string
-	Len     int
-	Col     *models.Column
-	Comment string
+	Name      string
+	Type      string
+	NilType   string
+	Len       int
+	Col       *models.Column
+	Comment   string
+	FieldName string
+}
+
+type Tuple struct {
+	Name      string
+	TupleName string
+	Fields    []*Field
 }
 
 // Type is a template item for a type (ie, table/view/custom query).

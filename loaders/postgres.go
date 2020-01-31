@@ -32,6 +32,9 @@ func init() {
 		IndexColumnList: PgIndexColumns,
 		QueryStrip:      PgQueryStrip,
 		QueryColumnList: PgQueryColumns,
+		TupleList: models.PgTuples,
+		TupleFields: models.PgTupleFields,
+
 	}
 }
 
@@ -59,7 +62,7 @@ func PgParseType(args *internal.ArgType, dt string, nullable bool) (int, string,
 	// handle SETOF
 	if strings.HasPrefix(dt, "SETOF ") {
 		_, _, t := PgParseType(args, dt[len("SETOF "):], false)
-		return 0, "nil", "[]" + t
+		return 0, "nil", "[]*" + t
 	}
 
 	// determine if it's a slice
@@ -308,7 +311,7 @@ func PgIndexColumns(db models.XODB, schema string, table string, index string) (
 	}
 
 	// load col order
-	colOrd, err := models.PgGetColOrder(db, schema, index)
+	colOrd, err := models.PgGetColOrder(db, index)
 	if err != nil {
 		return nil, err
 	}
