@@ -72,6 +72,7 @@ func (a *ArgType) ExecuteTemplate(tt TemplateType, name string, sub string, obj 
 	}
 
 	a.Generated = append(a.Generated, v)
+
 	return nil
 }
 

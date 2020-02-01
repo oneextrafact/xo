@@ -13,7 +13,7 @@ func {{ .Name }} (db XODB{{ range .QueryParams }}, {{ .Name }} {{ .Type }}{{ end
 	{{end -}}`{{ $l }}`{{ end }}
 
 	// run query
-	XOLog(sqlstr{{ range .QueryParams }}{{ if not .Interpolate }}, {{ .Name }}{{ end }}{{ end }})
+	Log(sqlstr{{ range .QueryParams }}{{ if not .Interpolate }}, {{ .Name }}{{ end }}{{ end }})
 {{- if .OnlyOne }}
 	var {{ $short }} {{ .Type.Name }}
 	err = db.QueryRow(sqlstr{{ range .QueryParams }}, {{ .Name }}{{ end }}).Scan({{ fieldnames .Type.Fields (print "&" $short) }})
@@ -46,4 +46,3 @@ func {{ .Name }} (db XODB{{ range .QueryParams }}, {{ .Name }} {{ .Type }}{{ end
 	return res, nil
 {{- end }}
 }
-

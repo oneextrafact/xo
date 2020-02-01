@@ -5,35 +5,34 @@
 {{- end}}
 {{- $proc := (schema .Schema .Proc.ProcName) -}}
 {{- if ne .Proc.ReturnType "trigger" -}}
-// {{ .Name }} calls the stored procedure '{{ $proc }}({{ .ProcParams }}) {{ .Proc.ReturnType }}' on db.
-func {{ .Name }}({{- if $tupleReturn}}db *sqlx.DB{{- else}}db XODB{{- end }}{{ goparamlist .Params true true }}) ({{ if $notVoid }}{{ retype .Return.Type }}, {{ end }}error) {
-	var err error
+// {{ goFuncName .Name }} calls the stored procedure '{{ $proc }}({{ .ProcParams }}) {{ .Proc.ReturnType }}' on db.
+func {{ goFuncName .Name }}({{- if $tupleReturn}}db DB{{- else}}db DB{{- end }}{{ goparamlist .Params true true }}) ({{ if $notVoid }}result {{ retype .Return.Type }}, {{ end }}err error) {
+	const stmt = `SELECT {{ if $tupleReturn}}* from {{ end }}{{ $proc }}({{ colvals .Params }})`
 
-	// sql query
-	const sqlstr = `SELECT {{ if $tupleReturn}}* from {{ end }}{{ $proc }}({{ colvals .Params }})`
-
-	// run query
 {{- if $tupleReturn }}
      //tuple return
 {{- end }}
 {{- if $notVoid }}
-	var ret {{ retype .Return.Type }}
-	XOLog(sqlstr{{ goparamlist .Params true false }})
-	{{- if $tupleReturn}}
-	err = db.Select(&ret, sqlstr)
-	{{- else }}
-	err = db.QueryRow(sqlstr{{ goparamlist .Params true false }}).Scan(&ret)
-	{{- end }}
-	if err != nil {
-		return {{ reniltype .Return.NilType }}, err
-	}
 
-	return ret, nil
+
+	Log(stmt{{ goparamlist .Params true false }})
+
+
+	{{- if $tupleReturn}}
+	if err = db.Select(&ret, stmt); err != nil {
+		return
+	}
+	{{- else }}
+	if err = db.QueryRow(stmt{{ goparamlist .Params true false }}).Scan(&result); err != nil {
+		return
+	}
+	{{- end }}
+
+	return
 {{- else }}
-	XOLog(sqlstr)
-	_, err = db.Exec(sqlstr)
-	return err
+	Log(stmt)
+	_, err = db.Exec(stmt)
+	return
 {{- end }}
 }
 {{- end }}
-
